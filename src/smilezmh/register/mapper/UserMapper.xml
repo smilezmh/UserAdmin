@@ -100,9 +100,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="smilezmh.register.pojo.User" >
-    insert into user (id, username, email, 
+    insert into user ( username, email, 
       telephone, password)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+    values ( #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{telephone,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="smilezmh.register.pojo.User" >
@@ -204,5 +204,17 @@
       email = #{email,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByUsernameAndPassword" parameterType="User" >
+    update user
+    <set>
+    <if test="username !=null">
+    username = #{username,jdbcType=VARCHAR},
+    </if>
+    <if test="password !=null">
+      password = #{password,jdbcType=VARCHAR},
+     </if>
+     </set>
+     where id =#{id,jdbcType=INTEGER}
   </update>
 </mapper>

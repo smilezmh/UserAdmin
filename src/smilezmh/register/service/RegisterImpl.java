@@ -14,12 +14,20 @@ public class RegisterImpl implements Register {
 	@Autowired
 	private UserMapper userMapper;
 	public void userRegister(User user){
-		userMapper.updateByPrimaryKey(user);
+		userMapper.insert(user);
 	}
 	public List<User> userLogin(UserExample ue){
 		return userMapper.selectByExample(ue);
 	}
 	public Integer editUser(User user){
-		return userMapper.updateByPrimaryKey(user);
+		UserExample ue=new UserExample();
+		ue.createCriteria().andUsernameEqualTo(user.getUsername());
+		List<User> list1=userMapper.selectByExample(ue);
+		
+		if(list1.size()!=0){
+			user.setId(list1.get(0).getId());
+		return userMapper.updateByUsernameAndPassword(user);
+		}
+		else return 0;
 	}
 }

@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width,initial-scale=1">	
-		<title>bootstrap的布局使用</title>
+		<title>修改密码</title>
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<script src="js/jquery-1.8.3.js" type="text/javascript"></script>
 		<script type="text/javascript" src="js/jquery.validate.min.js"></script>
@@ -48,9 +48,9 @@ font {
 			<div class="col-md-7">
 				<div
 					style="width: 600px; border: 1px solid #E7E7E7; padding: 27px 0 2px 30px; border-radius: 5px; margin-top: 47px; background: #fff;">
-					<font>用户修改密码</font>EDIT USER <span>${word1}</span>
+					<font>用户修改密码</font>EDIT USER        <span>${word1}</span>
 					<div>&nbsp;</div>
-					<form class="form-horizontal" action="${pageContext.request.contextPath }/edit.action?id=${id}" method="post" id="register">
+					<form class="form-horizontal" action="${pageContext.request.contextPath }/refresh.action" method="post" id="register">
 						<div class="form-group">
 							<label for="username" class="col-sm-3 control-label">用户名</label>
 							<div class="col-sm-6">
@@ -60,9 +60,9 @@ font {
 						</div>
 						
 						<div class="form-group">
-							<label for="inputPassword3" class="col-sm-3 control-label">新密码是</label>
+							<label for="inputPassword3" class="col-sm-3 control-label">新密码</label>
 							<div class="col-sm-6">
-								<input type="password" class="form-control"  name="password2" value="${user.password} "
+								<input type="password" class="form-control"  name="password2" value="${user.password}"
 									placeholder="请输入密码">
 							</div>
 						</div>
