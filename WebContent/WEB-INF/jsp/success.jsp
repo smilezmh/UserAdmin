@@ -7,6 +7,6 @@
 <title>登录成功</title>
 </head>
 <body>
-register success!
+register success!</br>
 </body>
 </html>

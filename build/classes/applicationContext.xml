@@ -25,6 +25,11 @@
 		<!-- 核心配置文件的位置 -->
 		<property name="configLocation" value="classpath:sqlMapConfig.xml"/>
 </bean>
+<!-- 添加LoginTime bean对象 -->
+<!-- <bean id="time" class="smilezmh.register.pojo.LoginTime">
+	<property name="id" value=""></property>
+	<property name="createtime" value=""></property>
+</bean> -->
 
 <!-- Mapper动态代理开发   扫描 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

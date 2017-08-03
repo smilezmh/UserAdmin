@@ -14,10 +14,12 @@ public class RegisterImpl implements Register {
 	@Autowired
 	private UserMapper userMapper;
 	public void userRegister(User user){
-		userMapper.insert(user);
+		if(user.getUsername()!=null)
+		userMapper.insert(user);//用户注册时插入值
+		else ;
 	}
 	public List<User> userLogin(UserExample ue){
-		return userMapper.selectByExample(ue);
+		return userMapper.selectByExample(ue);//登录查询数据库中是否存在这样的值
 	}
 	public Integer editUser(User user){
 		UserExample ue=new UserExample();
@@ -25,7 +27,7 @@ public class RegisterImpl implements Register {
 		List<User> list1=userMapper.selectByExample(ue);
 		
 		if(list1.size()!=0){
-			user.setId(list1.get(0).getId());
+			user.setId(list1.get(0).getId());//将查询到的同名的id给user
 		return userMapper.updateByUsernameAndPassword(user);
 		}
 		else return 0;

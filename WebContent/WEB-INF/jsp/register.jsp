@@ -54,7 +54,7 @@ font {
 							digits:true,
 							minlength:6
 						},
-						conformpass:{
+						conformpassword:{
 							required:true,
 							digits:true,
 							minlength:6,
@@ -80,7 +80,9 @@ font {
 							minlength:"密码不能少于6位"
 						},
 						conformpassword:{
-							
+							required:"不能为空",
+							digits:"必须为数字",
+							minlength:"最少6位",
 							equalTo:"您两次输入的密码不相同"
 						},
 						
@@ -101,16 +103,16 @@ font {
 
 
 	<div class="container"
-		style="width: 100%; height: 550px; background: #FF2C4C url('images/loginbg.jpg') no-repeat;">
+		style="width: 100%; height: 900px; background: #FF2C4C url('images/login_bg.jpg') no-repeat;">
 		<div class="row">
-			<div class="col-md-5">
+			<div class="col-md-4">
 				<!--<img src="./image/login.jpg" width="500" height="330" alt="会员登录" title="会员登录">-->
 			</div>
 
-			<div class="col-md-7">
+			<div class="col-md-8">
 				<div
-					style="width: 600px; border: 1px solid #E7E7E7; padding: 27px 0 2px 30px; border-radius: 5px; margin-top: 47px; background: #fff;">
-					<font>用户注册</font>USER REGISTER
+					style="width: 600px; border: 1px solid #E7E7E7; padding: 27px 0 2px 30px; border-radius: 5px; margin-top: 200px; background: #fff;">
+					<font>用户注册</font>USER REGISTER  ${time}
 					<div>&nbsp;</div>
 					<form class="form-horizontal" action="${pageContext.request.contextPath }/register.action" method="post" id="register">
 						<div class="form-group">

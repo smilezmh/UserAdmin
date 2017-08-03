@@ -35,26 +35,26 @@ font {
 </style>
 <script>
 	$(function(){
-				$("#register").validate({
+				$("#login").validate({
 					rules:{
-						username:{
+						username1:{
 							required:true,
 							minlength:3
 						},
-						password:{
+						password1:{
 							required:true,
 							digits:true,
 							minlength:6
 						},
 					
 					},
-					messages:{
+					messages1:{
 							username:{
 							required:"用户名不能为空",
 							minlength:"用户名不能少于3位"
 						},
 					
-						password:{
+						password1:{
 							required:"密码不能为空",
 							digits:"密码必须为数字",
 							minlength:"密码不能少于6位"
@@ -78,18 +78,18 @@ font {
 
 
 	<div class="container"
-		style="width: 100%; height: 550px; background: #FF2C4C url('images/loginbg.jpg') no-repeat;">
+		style="width: 100%; height: 900px; background: #FF2C4C url('images/login_bg.jpg') no-repeat;">
 		<div class="row">
-			<div class="col-md-5">
+			<div class="col-md-4">
 				<!--<img src="./image/login.jpg" width="500" height="330" alt="会员登录" title="会员登录">-->
 			</div>
 
-			<div class="col-md-7">
+			<div class="col-md-8">
 				<div
-					style="width: 600px; border: 1px solid #E7E7E7; padding: 27px 0 2px 30px; border-radius: 5px; margin-top: 47px; background: #fff;">
-					<font>用户登陆</font>USER LOGIN
+					style="width: 600px; border: 1px solid #E7E7E7; padding: 27px 0 2px 30px; border-radius: 5px; margin-top: 300px; background: #fff;">
+					<font>用户登陆</font>USER LOGIN <span>&nbsp;</span><span>上次登录时间：${time}</span>
 					<div>&nbsp;</div>
-					<form class="form-horizontal" action="${pageContext.request.contextPath }/login.action" method="post" id="register">
+					<form class="form-horizontal" action="${pageContext.request.contextPath }/login.action" method="post" id="login">
 						<div class="form-group">
 							<label for="username" class="col-sm-3 control-label">用户名</label>
 							<div class="col-sm-6">
