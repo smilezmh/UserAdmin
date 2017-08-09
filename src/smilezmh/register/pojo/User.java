@@ -10,9 +10,12 @@ public class User {
     private String telephone;
 
     private String password;
-
-    private Integer flag;
-
+  
+    private Integer flag=0;
+    private String home;
+    private String pro;
+    //如果想作为管理者不能删除管理者，就让其flag为空
+   
     public Integer getId() {
         return id;
     }
@@ -60,4 +63,20 @@ public class User {
     public void setFlag(Integer flag) {
         this.flag = flag;
     }
+
+	public String getHome() {
+		return home;
+	}
+
+	public void setHome(String home) {
+		this.home = home;
+	}
+
+	public String getPro() {
+		return pro;
+	}
+
+	public void setPro(String pro) {
+		this.pro = pro;
+	}
 }

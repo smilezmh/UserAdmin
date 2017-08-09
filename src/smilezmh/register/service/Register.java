@@ -15,5 +15,8 @@ public interface Register {
 	public void updateUser(User user);
 
 	public void deletebyid(Integer id);
+	public User findMaxIdUser();
+	public void insertUser(User user);
+	
 
 }

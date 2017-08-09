@@ -28,6 +28,7 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
     int updateByPrimaryKey(User record);
     int updateByUsernameAndPassword(User record);
+	User findUserMaxID();
 
     
     

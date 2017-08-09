@@ -49,5 +49,14 @@ public class RegisterImpl implements Register {
 		userMapper.deleteByPrimaryKey(id);
 		
 	}
+	@Override
+	public User findMaxIdUser() {
+		return userMapper.findUserMaxID();
+		
+	}
+	public void insertUser(User user) {
+		userMapper.insert(user);
+		
+	}
 	
 }

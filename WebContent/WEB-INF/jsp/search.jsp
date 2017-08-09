@@ -75,6 +75,8 @@
 					<td>用户电话</td>
 					<td>用户密码</td>
 					<td>邮箱</td>
+					<td>国别</td>
+					<td>职业</td>
 					
 					
 				</tr>
@@ -86,9 +88,8 @@
 				<td>${item.telephone}</td>
 				<td>${item.password}</td>
 				<td>${item.email}</td>
-				<td>
-				
-				
+				<td>${item.home}</td>
+				<td>${item.pro}</td>
 				</td>
 				</tr>
 			
