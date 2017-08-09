@@ -2,6 +2,7 @@ package smilezmh.register.service;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,4 +33,21 @@ public class RegisterImpl implements Register {
 		}
 		else return 0;
 	}
+	public List<User> searchList(){
+		return userMapper.selectAll();
+	}
+	public User selectById(Integer id){
+		
+		return userMapper.selectByPrimaryKey(id);
+	}
+	public void updateUser(User user) {
+		userMapper.updateByPrimaryKeySelective(user);
+	}
+
+	public void deletebyid(Integer id) {
+		// TODO Auto-generated method stub
+		userMapper.deleteByPrimaryKey(id);
+		
+	}
+	
 }

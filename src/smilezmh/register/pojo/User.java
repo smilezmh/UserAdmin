@@ -1,7 +1,7 @@
 package smilezmh.register.pojo;
 
 public class User {
-    
+    private Integer id;
 
     private String username;
 
@@ -10,7 +10,8 @@ public class User {
     private String telephone;
 
     private String password;
-    private Integer id;
+
+    private Integer flag;
 
     public Integer getId() {
         return id;
@@ -50,5 +51,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    public Integer getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Integer flag) {
+        this.flag = flag;
     }
 }

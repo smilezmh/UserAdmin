@@ -1,13 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
- 
-<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -17,51 +10,14 @@
 		<script type="text/javascript" src="js/jquery.validate.min.js"></script>
 		<script type="text/javascript" src="js/messages_zh.js"></script>
 		<script src="js/bootstrap.min.js" type="text/javascript"></script>
-		<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
-		<script type="text/javascript">
-		function changeFlag(id){
-			$.ajax({
-				url:"${pageContext.request.contextPath}/123.action",
-				type:"post",
-				data:{"id":id},
-				success:function(data){
-					window.location.reload();
-				}
-			});
-		}
-		function deleteItem(id){
-			$.ajax({
-				url:"${pageContext.request.contextPath}/deleteFunction.action",
-				type:"post",
-				data:{"id":id},
-				success:function(data){
-					window.location.reload();
-				}
-			});
-		}
-		function editUSER(id){
-			$.ajax({
-				url:"${pageContext.request.contextPath}/editFunction.action",
-				type:"post",
-				data:{"id":id},
-				success:function(data){
-					alert(data.username);
-					var idi=data.id;
-					 window.location.href="${pageContext.request.contextPath}/editUser.action?id="+idi;
-				}
-			});
-		}
-	</script>
-
 <title>账户管理</title>
 </head>
 <body>
-
 <div class="page-header">
-  <h1 align="center">用户查询管理<span>&nbsp;&nbsp;</span><small>USER SEARCH&ADMIN</small></h1>
+  <h1 align="center">用户查询管理 <small>USER SEARCH&ADMIN</small></h1>
 </div>
-
 <!-- 导航条 -->
+
 <div>
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -109,49 +65,34 @@
 </div>
 
 <div>
-<form  id="itemsearch" cellpadding="2px" cellspacing="2px" align="center" >
+<div>
+<form action="${pageContex.request.contextPath}/*.action" id="itemsearch" cellpadding="2px" cellspacing="2px" align="center" >
 	<table class="table" >
 		<thead style="font-weight: bold;">
 				<tr>
-					
 					<td>用户id</td>
 					<td>用户名</td>
 					<td>用户电话</td>
 					<td>用户密码</td>
 					<td>邮箱</td>
-					<td>使用状态</td>
-					<td>操作</td>
-				
+					
+					
 				</tr>
 		</thead>	
 			
-			<c:forEach items="${itemlist}" var="item">
-			<tr>
-				
+				<tr>
 				<td>${item.id}</td>
 				<td>${item.username}</td>
 				<td>${item.telephone}</td>
 				<td>${item.password}</td>
 				<td>${item.email}</td>
 				<td>
-					<c:if test="${item.flag == 1}">已启用</c:if>
-					<c:if test="${item.flag ==0 }">已禁用</c:if>
+				
+				
 				</td>
- 				<td>
-				<c:if test="${item.flag == 1}">
-				<a href="#"   onclick="changeFlag(${item.id})">禁用</a>
-			<%-- 	<a href="${pageContext.request.contextPath}/editUser.action?id=${item.id}">编辑</a> --%>
-				<a href="#" onclick="editUSER(${item.id})">编辑</a>
-				</c:if>
-				<c:if test="${item.flag == 0}">
-				<a href="#" onclick="changeFlag(${item.id})">启用</a>
-				<a  href="#" onclick="deleteItem(${item.id})">删除</a>
-				</c:if>
-				</td>
-			<tr>
-			</c:forEach>
+				</tr>
+			
 	</table>
-
 </form>
 </div>
 <div>
@@ -175,9 +116,5 @@
   </ul>
 </nav>
 </div>
-<div id="saysome">
-</div>
-</div>
-
 </body>
 </html>

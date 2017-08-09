@@ -53,7 +53,7 @@ font {
 							minlength:6,
 							equalTo:"[name='password2']"
 						}
-					},s
+					},
 					messages:{
 							username2:{
 							required:"用户名不能为空",

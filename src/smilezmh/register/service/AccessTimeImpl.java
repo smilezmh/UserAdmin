@@ -3,6 +3,7 @@ package smilezmh.register.service;
 import java.text.SimpleDateFormat;
 
 
+
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -11,7 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.http.Cookies;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,15 +32,23 @@ public class AccessTimeImpl implements AccessTime {
 	private TimeMapper timemapper=null;
 	//@Autowired
 	private LoginTime time=new LoginTime();//必须初始实例化，要不会报错，或者用自动注入，在application.xml中加入相应的<bean>对象
+	private String currentTime;
+	private String getCurrentTime() {
+		return currentTime;
+	}
+	public void setCurrentTime(String currentTime) {
+		this.currentTime = currentTime;
+	}
 	public String AccessTime(HttpServletRequest request,HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		String lastAccessTime=null;
 		Date date=new Date();
 		SimpleDateFormat format=new SimpleDateFormat();
-		String currentTime=format.format(date);
+		currentTime=format.format(date);
 		Cookie cookie=new Cookie("createtime",currentTime);
 		cookie.setMaxAge(60*100*50);
 		//cookie.setPath("/register");
+		response.addCookie(cookie);
 		Cookie[] cookies= request.getCookies();
 		if(cookies!=null)
 		for(Cookie co:cookies){
@@ -47,7 +56,7 @@ public class AccessTimeImpl implements AccessTime {
 				lastAccessTime=co.getValue();
 			}
 		}
-		response.addCookie(cookie);
+		
 		time.setId(UUID.randomUUID().toString());
 		time.setCreatetime(lastAccessTime);
 		timemapper.insert(time);

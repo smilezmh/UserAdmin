@@ -3,6 +3,7 @@ package smilezmh.register.controller;
 import java.io.IOException;
 
 
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,9 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import smilezmh.register.pojo.User;
 import smilezmh.register.pojo.UserExample;
@@ -52,6 +56,9 @@ public class UserController {
 		list = re.userLogin(ue);
 		if (list.size() != 0){
 			//mod.addAttribute("time1", ac.AccessTime(request, response));//回传访问时间
+			
+			List<User> user=re.searchList();
+			mod.addAttribute("itemlist", user);
 			return "success";}
 		else
 			mod.addAttribute("word1", "密码输入错误请修改密码！");
@@ -75,4 +82,66 @@ public class UserController {
 			return "edituser";
 		}
 	}
-}
+	@RequestMapping(value="/search")
+	public String SearchAdminController(Model mod){
+		List<User> user=re.searchList();
+		mod.addAttribute("itemlist", user); 
+		return "success";
+	}
+	@RequestMapping(value="/selectID")
+	public String SelectIdController(Model mod,Integer id){
+		User user=re.selectById(id);
+		mod.addAttribute("item", user);
+		return "search";
+	}
+	@RequestMapping(value="/editUser")
+	public String EditUserIdController(Model mod,Integer id){
+		User user=re.selectById(id);
+		mod.addAttribute("item1", user);
+		return "edituserID";
+	}
+	@RequestMapping(value="/editSuccess")
+	public String EditSuccessShowController(Model mod,User user){
+		
+		re.updateUser(user);
+		List<User> user1=re.searchList();
+		mod.addAttribute("itemlist", user1);
+		return "success";
+	}
+	@RequestMapping(value="/deleteUser")
+	public String deleteController(Model mod,Integer id){
+		re.deletebyid(id);
+		List<User> user=re.searchList();
+		mod.addAttribute("itemlist", user);
+		return "success";
+	}
+	//进行禁用启用
+	@RequestMapping(value="/123")
+	public @ResponseBody
+	String onOffController( Integer id){
+		System.out.println(id);
+		User user=re.selectById(id);
+		if(user.getFlag()==0)
+			user.setFlag(1);
+		else user.setFlag(0);
+		 re.updateUser(user);
+		 return "OK";
+		
+		//re.updateUser(user);
+		
+		//mod.addAttribute("flag", re.selectById(id).getFlag());
+		
+	}
+	@RequestMapping(value="/deleteFunction")
+	public @ResponseBody
+	String deleteController(Integer id){
+		re.deletebyid(id);
+		return "ok";
+	}
+	@RequestMapping(value="/editFunction")
+	public @ResponseBody
+	User editController(Integer id){
+		return re.selectById(id) ;
+	}
+}	
+
