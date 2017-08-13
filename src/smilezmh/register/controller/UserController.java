@@ -1,13 +1,18 @@
 package smilezmh.register.controller;
 
 import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.el.ELException;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -16,21 +21,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+
+
 
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
+import smilezmh.register.common.utils.Page;
+import smilezmh.register.pojo.QueryVo;
+import smilezmh.register.pojo.QueryVo1;
+import smilezmh.register.pojo.QueryVoEdit;
 import smilezmh.register.pojo.User;
 import smilezmh.register.pojo.UserExample;
 import smilezmh.register.service.AccessTime;
+import smilezmh.register.service.QueryVoService;
 import smilezmh.register.service.Register;
 
 @Controller
 public class UserController {
 	List<User> list = null;	
+	//Integer[] intList=null;
 	@Autowired
-	private Register re;
+	private Register re;//登录等相关服务
 	@Autowired
-	private AccessTime ac;
+	private AccessTime ac;//获取上次显示时间
+	@Autowired
+	private QueryVoService qv;
 	//获取用户上次登录时间
 	@RequestMapping(value = "/register")
 	public String RegisterController(User user, Model mod,HttpServletRequest request,HttpServletResponse response) {
@@ -55,8 +71,9 @@ public class UserController {
 		if (list.size() != 0){
 			//mod.addAttribute("time1", ac.AccessTime(request, response));//回传访问时间
 			
-			List<User> user=re.searchList();
-			mod.addAttribute("itemlist", user);
+			//将不重复国别放进集合中
+			
+			
 			return "success";}
 		else
 			mod.addAttribute("word1", "密码输入错误请修改密码！");
@@ -82,9 +99,19 @@ public class UserController {
 	}
 	//页面展示出所有的用户
 	@RequestMapping(value="/search")
-	public String SearchAdminController(Model mod){
+	public String SearchAdminController(Model mod,QueryVo1 vo1){
 		List<User> user=re.searchList();
-		mod.addAttribute("itemlist", user); 
+		Page<User> page = qv.getPageByQueryVo1(vo1);
+		mod.addAttribute("page", page); 
+		Set<String> city=new HashSet<String>();
+		Set<String> career=new HashSet<String>();
+		for(User u:user){
+			city.add(u.getHome());
+			career.add(u.getPro());
+		}
+		mod.addAttribute("itemlist", user);
+		mod.addAttribute("home", city);
+		mod.addAttribute("pro", career);
 		return "success";
 	}
 	//搜索功能
@@ -104,14 +131,15 @@ public class UserController {
 	}
 	//修改后跳转
 	@RequestMapping(value="/editSuccess")
-	public String EditSuccessShowController(Model mod,User user,HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException{
+	public String EditSuccessShowController(Model mod,User user,HttpServletRequest request,HttpServletResponse response,QueryVo1 vo) throws UnsupportedEncodingException{
 		//response.setContentType("text/html;charset=UTF-8");
 		//request.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8"); 
 		re.updateUser(user);
-		List<User> user1=re.searchList();
-		mod.addAttribute("itemlist", user1);
+		Page<User> page = qv.getPageByQueryVo1(vo);
+		
+		mod.addAttribute("page", page);
 		return "success";
 	}
 	//删除也能更好
@@ -163,6 +191,61 @@ public class UserController {
 			user.setFlag(0);
 			re.insertUser(user); 
 			return "OK";
+		}
+		//多条件查询
+		@RequestMapping(value="/multiSearch")
+		 public String multiSearchController(QueryVo vo,Model mod){
+			List<User> user=re.searchList();
+			Set<String> city=new HashSet<String>();
+			Set<String> career=new HashSet<String>();
+			for(User u:user){
+				city.add(u.getHome());
+				career.add(u.getPro());
+			}
+			 mod.addAttribute("home2", city);
+			 mod.addAttribute("pro2", career);
+			
+			
+			Page<User> page=qv.getPageByQueryVo(vo);  
+			//可以让下拉选框中的值一直显示
+			//mod.addAttribute("home1", vo.getHome());
+			//mod.addAttribute("pro1", vo.getPro());
+			 mod.addAttribute("page", page);
+			 return "multiSerach";
+		
+		}
+		//批量删除页面跳转
+		@RequestMapping(value = "/deleteManyJsp")
+		public String deleteUsesrController( Model mod ,QueryVo1 vo){
+			Page<User> page=qv.getPageByQueryVo1(vo);  
+			 mod.addAttribute("page", page);
+			
+			return "listDeledit";
+		}
+		//批量删除
+		@RequestMapping(value = "/deleteMany")
+		public String deleteUsesrsController(Integer[] list,Model mod ,QueryVo1 vo){
+			Page<User> page=qv.getPageByQueryVo1(vo);
+			for(int i=0;i<list.length;i++){
+				re.deletebyid(list[i]);
+			}
+			 mod.addAttribute("page", page);
+			//for(int i=0;i<intList.length;i++)
+			//System.out.println(intList[i]);
+			return "listDeledit";
+		}
+		//批量修改
+		@RequestMapping(value = "/editMany")
+		public String editUsesrsController(QueryVoEdit edit,Model mod ,QueryVo1 vo){
+			
+			for(int i=0;i<edit.getList().size();i++){
+				re.updateUser(edit.getList().get(i));
+			}
+			Page<User> page=qv.getPageByQueryVo1(vo);
+			 mod.addAttribute("page", page);
+			//for(int i=0;i<intList.length;i++)
+			//System.out.println(intList[i]);
+			return "listDeledit";
 		}
 
 }	

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="smilezmh.register.mapper.QueryVoDao" >
+<!--  //	求符合查询条件的分页的总条数total
+	public Integer countUserByQueryVo(QueryVo vo);
+	//求每页分页对象中User对象结果集
+	public List<User> getUserListByQueryVo(QueryVo vo); 
+	
+	sql语句
+	<select id="" parameterType="QueryVo" resultTpye="">
+	select count(1) from table 
+	<where>
+	<if test="数据库列名!=null">
+	数据库列名 like "%#{vo中传入参数}%" //like模糊查询.防止注入
+	</if>
+	</where>
+	</select> -->
+	
+	
+	<!-- 求符合查询条件的分页的总条数total
+	public Integer countUserByQueryVo(QueryVo vo); -->
+	<select id="countUserByQueryVo" parameterType="QueryVo" resultType="Integer">
+	select count(1) from user 
+	<where>
+	<if test="username != null and username != ''">
+				username like "%"#{username}"%"
+	</if>
+	<if test="home!=null and home!=''">
+	home= #{home} 
+	</if>
+	<if test="pro!=null and pro!=''">
+	 and pro= #{pro} 
+	</if>
+	</where>
+	</select>
+	<!--求分页对象中每页的User对象结果集 
+	public List<User> getUserListByQueryVo(QueryVo vo);  -->
+		
+	<select id="getUserListByQueryVo" parameterType="QueryVo" resultType="User">
+	select * from user 
+	<where>
+	<if test="username != null and username != ''">
+		username like "%"#{username}"%"
+	</if>
+	<if test="home!=null and home!=''">
+	home= #{home} 
+	</if>
+	<if test="pro!=null and pro!=''">
+	 and pro= #{pro} 
+	</if>
+	</where>
+	limit #{startRow},#{size}
+	</select>
+
+
+
+	<select id="countUserByQueryVo1" parameterType="QueryVo1" resultType="Integer">
+	select count(1) from user 
+	</select>
+	<!--求分页对象中每页的User对象结果集 
+	public List<User> getUserListByQueryVo(QueryVo vo);  -->
+		
+	<select id="getUserListByQueryVo1" parameterType="QueryVo1" resultType="User">
+	select * from user 
+	limit #{startRow},#{size}
+	</select>
+  </mapper>

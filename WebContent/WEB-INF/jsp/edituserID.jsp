@@ -56,11 +56,10 @@
 	<td><input type="text" name="pro" value="${item1.pro}"></td>
 	
 	</tr>
-	
-	
 	</table>
 	<tr>
 	<input type="submit" class="btn btn-default" alligin="center" value="确认修改">
+
 	</tr>
 	
 </form>

@@ -45,6 +45,7 @@
 	</table>
 </form>
 </div>
-
+<a href="${pageContext.request.contextPath }/search.action"> 
+					返回搜索主页</a>
 </body>
 </html>

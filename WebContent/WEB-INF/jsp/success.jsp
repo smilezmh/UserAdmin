@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!-- 自定义标签库 -->
+<%@ taglib prefix="smilezmh" uri="http://smilezmh.cn/common/"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -12,6 +14,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <script src="js/jquery-1.8.3.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jquery.validate.min.js"></script>
@@ -21,6 +27,9 @@
 <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+		$(function () {
+	  $('[data-toggle="popover"]').popover()
+	})
 		//改变flag值
 		function changeFlag(id){
 			$.ajax({
@@ -43,24 +52,27 @@
 				}
 			});
 		}
-		//进行修改页面跳转显示
+		//进行修改页面跳转显示，跳了几次写的有点繁琐
 		function editUSER(id){
 			$.ajax({
 				url:"${pageContext.request.contextPath}/editFunction.action",
 				type:"post",
 				data:{"id":id},
 				success:function(data){
-					alert(data.id);
+					alert("要修改的用戶是："+data.username);
 					var idi=data.id;
 					 window.location.href="${pageContext.request.contextPath}/editUser.action?id="+idi;
+					
 				}
 			});
 		}
+		//这种方式对于传送json格式字符串有用
  	/* function addUser(){
-	 		alert($("#add_user").serialize())
+			var params='{"username"="zhangsan","address"="chengdu","age"=25}'
+	 		
 			$.ajax({
 				url:"${pageContext.request.contextPath}/addUser.action",
-				data:$('#add_user').serialize(),
+				data:params,
 				type:"post",
 				contentType : "application/json;charset=UTF-8",//发送数据的格式
 				success:function(data){
@@ -69,6 +81,7 @@
 				}
 			});
 		}   */
+		//添加用户，将用户对象以json格式字符传给controller对象
 	function addUser() {
 			$.post("<%=basePath%>addUser.action",$("#add_user").serialize(),function(data){
 				alert("添加用户成功！");
@@ -93,16 +106,7 @@
 		<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-
-			</div>
-
+			
 			<%-- ${pageContext.request.contextPath }/addUser.action --%>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -115,40 +119,40 @@
 					</a>
 						<ul class="dropdown-menu" role="menu">
 
-							<li><a href="#">批量删除</a></li>
-							<li><a href="#">批量修改</a></li>
+							<li><a href="${pageContext.request.contextPath}/deleteManyJsp.action">批量删除</a></li>
+							<li><a href="${pageContext.request.contextPath}/deleteManyJsp.action">批量修改</a></li>
 							<li class="divider"></li>
 							<li><a href="#" data-toggle="modal"
 								data-target="#userAddDialog">增加用户</a></li>
-						</ul></li>
+							<li><a href="${pageContext.request.contextPath}/multiSearch.action" >多条件查询</a></li>
+						</ul>
+					</li>
+					<!--ID查询  -->
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
 					<li>
 						<form class="navbar-form navbar-left" role="search"
 							action="${pageContext.request.contextPath}/selectID.action">
-							<button type="submit" class="btn btn-default">查询</button>
+							
 							<div class="form-group">
 								<input type="text" class="form-control"
 									placeholder="输入要查询的用户的id" name="id">
+								<button type="submit" class="btn btn-default">ID查询</button>
 							</div>
 						</form>
 					</li>
-
-
-
+					
 				</ul>
-
 			</div>
 			<!-- /.navbar-collapse -->
-		</div>
-		<!-- /.container-fluid --> </nav>
+					<!-- /.container-fluid --> </nav>
+		
 	</div>
-
 	<div>
 		<form id="itemsearch" cellpadding="2px" cellspacing="2px"
 			align="center">
 			<table class="table">
 				<thead style="font-weight: bold;">
 					<tr>
-
 						<td>用户id</td>
 						<td>用户名</td>
 						<td>用户电话</td>
@@ -162,7 +166,7 @@
 					</tr>
 				</thead>
 
-				<c:forEach items="${itemlist}" var="item">
+				<c:forEach items="${page.rows}" var="item">
 					<tr>
 
 						<td>${item.id}</td>
@@ -184,27 +188,20 @@
 							</c:if></td>
 					<tr>
 				</c:forEach>
+				
 			</table>
-
+				<div class="col-md-12">
+			<smilezmh:page url="${pageContext.request.contextPath}/search.action"/>
+				</div>
 		</form>
+	
+	
+	
 	</div>
-	<div>
-		<nav align="center">
-		<ul class="pagination">
-			<li><a href="#" aria-label="Previous"> <span
-					aria-hidden="true">&laquo;</span>
-			</a></li>
-			<li><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">5</a></li>
-			<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-			</a></li>
-		</ul>
-		</nav>
-	</div>
-	<div id="saysome"></div>
+	
+	
+
+
 	<!--增加新用户动态弹出  -->
 	<div class="modal fade" id="userAddDialog" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">
@@ -254,7 +251,7 @@
 							<label for="jljl" class="col-sm-2 control-label">国别</label>
 							<div class="col-sm-10">
 								<input type="text" class="form-control" id="add_home"
-									placeholder="密码" name="home">
+									placeholder="国别" name="home">
 							</div>
 						</div>
 						<div class="form-group">
@@ -268,13 +265,13 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default"
 								data-dismiss="modal">关闭</button>
-							<button type="button" class="btn btn-primary" onclick="addUser()">确定添加</button>
+							<button type="button"  class="btn btn-default" onclick="addUser()">确定添加</button>
 						</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!--编辑新用户动态弹出  -->
+	<!-- <!--编辑新用户动态弹出 
 	<div class="modal fade" id="userAddDialog" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
@@ -319,20 +316,18 @@
 									placeholder="密码" name="password">
 							</div>
 						</div>
-
-
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default"
 								data-dismiss="modal">关闭</button>
 							<button type="button" class="btn btn-primary"
-								onclick="editUser()">确定更新</button>
+								onclick="editUser()">确定添加</button>
 						</div>
 				</div>
 			</div>
 		</div>
-	</div>
-
-
-
+	</div> -->
+	
+	
+		
 </body>
 </html>
