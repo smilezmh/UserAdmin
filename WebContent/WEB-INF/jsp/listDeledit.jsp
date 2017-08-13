@@ -27,8 +27,9 @@
 <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+/* 批量删除 */
 	function deleteUsers(){
-		var list=new Array();
+		var list=new Array();//数组存放选中的id
 		$("input:checkbox[name='usersSelect']:checked").each(function(){
 			list.push($(this).val());
 		});
@@ -85,6 +86,7 @@
 			<form id="itemsearch" cellpadding="2px" cellspacing="2px"
 				align="center" action="${pageContext.request.contextPath}/editMany.action" method="post">
 				<table class="table table-bordered">
+				<!--批量修改  -->
 				<button type="submit" class="btn btn-default navbar-btn">修改</button>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<button type="button" class="btn btn-default navbar-btn" onclick="deleteUsers()">刪除</button>

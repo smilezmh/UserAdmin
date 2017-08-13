@@ -19,12 +19,10 @@ import org.springframework.stereotype.Service;
 import smilezmh.register.mapper.TimeMapper;
 import smilezmh.register.pojo.LoginTime;
 
-
-
-
-
-/*
- * *需求：利用cookie获得上次访问时间，显示在页面中，并将数据时间写入数据库中
+/**
+ * 需求：利用cookie获得上次访问时间，显示在页面中，并将数据时间写入数据库中
+ * @author Administrator
+ *
  */
 @Service
 public class AccessTimeImpl implements AccessTime {
